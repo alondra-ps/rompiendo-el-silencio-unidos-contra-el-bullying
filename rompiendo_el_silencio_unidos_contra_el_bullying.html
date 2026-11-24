@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rompiendo el Silencio: Unidos Contra el Bullying</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Font Awesome para iconos limpios -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brandPurple: {
+              dark: '#4A154B',
+              main: '#6B21A8',
+              light: '#9333EA',
+              soft: '#F3E8FF'
+            },
+            brandPink: {
+              main: '#EC4899',
+              light: '#F472B6',
+              soft: '#FDF2F8'
+            },
+            brandYellow: {
+              main: '#FACC15',
+              light: '#FEF08A',
+              dark: '#EAB308'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Estilos de apoyo sutiles manteniendo la paleta estricta Morado, Rosa, Amarillo y Blanco */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFFFFF;
+      color: #4A154B;
+    }
+    .glass-nav {
+      background-color: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+    }
+    /* Animación suave para mensajes toast */
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .toast-enter {
+      animation: slideUp 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-white text-[#4A154B] antialiased selection:bg-[#FACC15] selection:text-[#4A154B]">
+
+  <!-- ==================== BARRA DE PROGRESO FIJA SUPERIOR ==================== -->
+  <div class="fixed top-0 left-0 right-0 z-50 glass-nav border-b-2 border-[#F472B6]/40 shadow-sm">
+    <!-- Barra de progreso combinada (Scroll + Módulos) -->
+    <div class="w-full h-2.5 bg-[#FDF2F8] overflow-hidden">
+      <div id="global-progress-bar" class="h-full bg-gradient-to-r from-[#6B21A8] via-[#EC4899] to-[#FACC15] transition-all duration-300" style="width: 0%;"></div>
+    </div>
+
+    <!-- Navegación rápida y métricas de avance -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#4A154B] text-[#FACC15] font-extrabold text-sm shadow">
+          <i class="fa-solid fa-shield-heart"></i>
+        </span>
+        <div>
+          <span class="font-extrabold text-sm sm:text-base text-[#4A154B] tracking-tight">Rompiendo el Silencio</span>
+          <span class="hidden md:inline-block ml-2 text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#FDF2F8] text-[#EC4899] border border-[#F472B6]">
+            Guía Interactiva
+          </span>
+        </div>
+      </div>
+
+      <!-- Enlaces de navegación por anclas -->
+      <nav aria-label="Navegación principal" class="hidden xl:flex items-center gap-1.5 text-xs font-bold">
+        <a href="#ficha-investigador" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">Mi Ficha</a>
+        <a href="#modulo-1" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">1. ¿Qué es?</a>
+        <a href="#modulo-2" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">2. Tipos</a>
+        <a href="#modulo-3" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">3. Roles</a>
+        <a href="#modulo-4" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">4. Señales</a>
+        <a href="#modulo-5" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">5. Protocolo</a>
+        <a href="#modulo-6" class="px-3 py-1.5 rounded-full hover:bg-[#FDF2F8] text-[#4A154B] transition">6. Multimedia y Test</a>
+      </nav>
+
+      <!-- Indicador numérico de progreso -->
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-[#6B21A8]">Avance total:</span>
+            <span id="progress-percentage" class="text-sm font-black text-[#EC4899]">0%</span>
+          </div>
+          <p id="modules-counter" class="text-[11px] font-medium text-[#4A154B]/80">0 de 6 módulos completados</p>
+        </div>
+        <button id="toggle-mobile-menu" aria-label="Abrir menú" class="xl:hidden p-2 rounded-xl bg-[#FDF2F8] text-[#4A154B] hover:bg-[#FEF08A] transition">
+          <i class="fa-solid fa-bars text-base"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú desplegable móvil/tablet -->
+    <div id="mobile-nav-drawer" class="hidden xl:hidden bg-white border-t border-[#F472B6]/30 px-4 py-3">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-bold">
+        <a href="#ficha-investigador" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">Mi Ficha</a>
+        <a href="#modulo-1" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">1. ¿Qué es?</a>
+        <a href="#modulo-2" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">2. Tipos</a>
+        <a href="#modulo-3" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">3. Roles</a>
+        <a href="#modulo-4" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">4. Señales</a>
+        <a href="#modulo-5" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center">5. Protocolo</a>
+        <a href="#modulo-6" class="mobile-link p-2.5 rounded-xl bg-[#FDF2F8] text-[#4A154B] text-center col-span-2">6. Videos, Notas y Test</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CABECERA PRINCIPAL CON EMBLEMA ==================== -->
+  <header class="pt-24 pb-12 sm:pt-28 sm:pb-16 bg-gradient-to-br from-[#4A154B] via-[#6B21A8] to-[#9333EA] text-white relative overflow-hidden">
+    <!-- Elementos decorativos en Rosa y Amarillo -->
+    <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#EC4899]/25 blur-2xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-16 w-80 h-80 rounded-full bg-[#FACC15]/20 blur-2xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Columna izquierda: Emblema oficial -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center">
+          <div class="relative w-60 h-60 sm:w-72 sm:h-72 rounded-full bg-white p-2.5 shadow-2xl border-4 border-[#FACC15] flex items-center justify-center overflow-hidden">
+            <!-- Imagen adjunta con fallback automático al SVG idéntico de alta definición -->
+            <img
+              id="emblem-img"
+              src="WhatsApp Image 2026-11-18 at 10.12.46 AM.jpeg"
+              alt="Emblema Rompiendo el Silencio - Unidos Contra el Bullying"
+              class="w-full h-full object-cover rounded-full"
+              onerror="this.style.display='none'; document.getElementById('emblem-svg-fallback').classList.remove('hidden');"
+            />
+
+            <!-- Representación SVG circular fiel al emblema adjunto (cadena rompiéndose, 4 siluetas tomadas de la mano y texto curvo) -->
+            <svg id="emblem-svg-fallback" class="hidden w-full h-full rounded-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Emblema Rompiendo el Silencio Unidos Contra el Bullying">
+              <defs>
+                <radialGradient id="bgGlow" cx="50%" cy="52%" r="48%">
+                  <stop offset="0%" stop-color="#FFFFFF" />
+                  <stop offset="55%" stop-color="#F3E8FF" />
+                  <stop offset="100%" stop-color="#D8B4FE" />
+                </radialGradient>
+                <linearGradient id="chainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#4A154B" />
+                  <stop offset="50%" stop-color="#7E22CE" />
+                  <stop offset="100%" stop-color="#EC4899" />
+                </linearGradient>
+                <linearGradient id="kidsGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#A855F7" />
+                  <stop offset="50%" stop-color="#6B21A8" />
+                  <stop offset="100%" stop-color="#4A154B" />
+                </linearGradient>
+                <path id="topArc" d="M 52,205 A 148,148 0 1,1 348,205" />
+                <path id="bottomArc" d="M 65,245 A 145,145 0 0,0 335,245" />
+              </defs>
+
+              <!-- Círculo base y borde morado oscuro -->
+              <circle cx="200" cy="200" r="194" fill="#F8F5FF" stroke="#4A154B" stroke-width="11" />
+              <!-- Disco interior con rayos -->
+              <circle cx="200" cy="195" r="122" fill="url(#bgGlow)" stroke="#9333EA" stroke-width="5" />
+              
+              <!-- Rayos de luz sutiles -->
+              <g opacity="0.35" fill="#C084FC">
+                <polygon points="200,195 140,85 165,80" />
+                <polygon points="200,195 190,74 215,74" />
+                <polygon points="200,195 245,82 268,94" />
+                <polygon points="200,195 285,112 302,132" />
+                <polygon points="200,195 95,118 114,98" />
+              </g>
+
+              <!-- Texto arqueado superior: ROMPIENDO EL SILENCIO -->
+              <text fill="#4A154B" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="29" letter-spacing="1.5">
+                <textPath href="#topArc" startOffset="50%" text-anchor="middle">ROMPIENDO EL SILENCIO</textPath>
+              </text>
+
+              <!-- Cadena rompiéndose en el lado izquierdo superior -->
+              <g transform="translate(88, 128) rotate(-42)">
+                <!-- Eslabón 1 -->
+                <rect x="0" y="18" width="44" height="22" rx="11" fill="none" stroke="url(#chainGrad)" stroke-width="7" />
+                <!-- Eslabón 2 -->
+                <rect x="30" y="18" width="44" height="22" rx="11" fill="none" stroke="url(#chainGrad)" stroke-width="7" />
+                <!-- Eslabón 3 roto (mitad izquierda) -->
+                <path d="M 65,18 L 80,18 A 11,11 0 0,1 85,22 M 85,36 A 11,11 0 0,1 80,40 L 65,40" fill="none" stroke="#4A154B" stroke-width="7" stroke-linecap="round" />
+                <!-- Fragmentos de ruptura -->
+                <polygon points="88,12 96,8 93,17" fill="#6B21A8" />
+                <polygon points="90,44 98,48 94,39" fill="#EC4899" />
+                <rect x="93" y="25" width="7" height="6" rx="1" fill="#4A154B" transform="rotate(20 96 28)" />
+                <!-- Eslabón 4 roto (mitad derecha separada) -->
+                <path d="M 106,15 L 126,15 A 12,12 0 0,1 126,43 L 106,43" fill="none" stroke="url(#chainGrad)" stroke-width="7" stroke-linecap="round" />
+              </g>
+
+              <!-- 4 Siluetas de niños y niñas tomados de la mano -->
+              <g fill="url(#kidsGrad)">
+                <!-- Niña 1 -->
+                <circle cx="152" cy="158" r="8.5" />
+                <path d="M144,170 L160,170 L165,193 L157,193 L157,210 L151,210 L151,193 L147,193 L145,210 L139,210 L141,193 L137,193 Z" />
+                <!-- Niña 2 (con coleta) -->
+                <circle cx="186" cy="156" r="8.5" />
+                <circle cx="176" cy="155" r="4.5" />
+                <path d="M178,168 L194,168 L199,192 L191,192 L191,210 L185,210 L185,192 L181,192 L179,210 L173,210 L175,192 L171,192 Z" />
+                <!-- Niño 3 -->
+                <circle cx="223" cy="151" r="9" />
+                <path d="M214,163 L232,163 L233,190 L229,190 L229,212 L222,212 L222,190 L218,190 L218,212 L211,212 L211,190 L213,190 Z" />
+                <!-- Niño 4 -->
+                <circle cx="258" cy="147" r="9.5" />
+                <path d="M249,160 L268,160 L269,188 L266,188 L272,208 L265,210 L259,191 L255,191 L253,212 L246,212 L248,188 Z" />
+                <!-- Brazos unidos -->
+                <path d="M136,182 L145,173 M159,173 L170,183 L179,172 M193,172 L205,182 L215,168 M231,168 L241,180 L250,165" stroke="#6B21A8" stroke-width="5.5" stroke-linecap="round" fill="none" />
+              </g>
+
+              <!-- Franja blanca inferior para el título central -->
+              <rect x="52" y="212" width="296" height="92" rx="18" fill="#FFFFFF" opacity="0.95" />
+              <text x="200" y="250" text-anchor="middle" fill="#4A154B" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="38" letter-spacing="0.5">ROMPIENDO</text>
+              <text x="200" y="289" text-anchor="middle" fill="#4A154B" font-family="Inter, Arial, sans-serif" font-weight="900" font-size="38" letter-spacing="0.5">EL SILENCIO</text>
+
+              <!-- Línea decorativa rosa/morada -->
+              <ellipse cx="200" cy="306" rx="68" ry="2.5" fill="#EC4899" />
+
+              <!-- Subtítulo curvo inferior -->
+              <text fill="#6B21A8" font-family="Inter, Arial, sans-serif" font-weight="800" font-size="16" letter-spacing="1.2">
+                <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">UNIDOS CONTRA EL BULLYING</textPath>
+              </text>
+            </svg>
+          </div>
+          <span class="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FACC15] text-[#4A154B] text-xs font-extrabold shadow">
+            <i class="fa-solid fa-star"></i> Emblema Oficial de Campaña
+          </span>
+        </div>
+
+        <!-- Columna derecha: Título, descripción y saludo dinámico -->
+        <div class="lg:col-span-7 text-center lg:text-left space-y-5">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EC4899] text-white text-xs sm:text-sm font-bold shadow-md">
+            <i class="fa-solid fa-book-open-reader"></i>
+            <span>Plataforma Educativa de Prevención e Investigación</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-white">
+            Rompiendo el Silencio: <span class="text-[#FACC15]">Unidos Contra el Bullying</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-[#FDF2F8] max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Explora información verificada, identifica señales de alerta, analiza recursos audiovisuales y construye un entorno escolar y digital seguro basado en la empatía y el respeto.
+          </p>
+
+          <!-- Banner de saludo personalizado que se activa al llenar la ficha -->
+          <div id="personalized-greeting-box" class="hidden p-4 rounded-2xl bg-white/15 border border-[#FACC15] backdrop-blur-sm text-left">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#FACC15] text-[#4A154B] flex items-center justify-center font-black text-lg shrink-0">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div>
+                <p id="greeting-title" class="font-extrabold text-[#FACC15] text-base sm:text-lg">¡Bienvenido/a!</p>
+                <p id="greeting-subtitle" class="text-xs sm:text-sm text-white/95 mt-0.5"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap justify-center lg:justify-start gap-3 pt-2">
+            <a href="#ficha-investigador" class="px-6 py-3 rounded-2xl bg-[#FACC15] hover:bg-[#FEF08A] text-[#4A154B] font-extrabold text-sm shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2">
+              <i class="fa-solid fa-id-card"></i> Completar mi Ficha
+            </a>
+            <a href="#modulo-1" class="px-6 py-3 rounded-2xl bg-[#EC4899] hover:bg-[#F472B6] text-white font-extrabold text-sm shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2">
+              <i class="fa-solid fa-compass"></i> Comenzar Recorrido
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-14">
+
+    <!-- ==================== FICHA DE INVESTIGADOR / ESTUDIANTE ==================== -->
+    <section id="ficha-investigador" class="scroll-mt-24 bg-[#FDF2F8] border-2 border-[#F472B6] rounded-3xl p-6 sm:p-8 shadow-lg">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-[#F472B6]/30 pb-5 mb-6">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-[#6B21A8] text-[#FACC15] flex items-center justify-center text-xl shadow">
+            <i class="fa-solid fa-address-card"></i>
+          </div>
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-wider text-[#EC4899]">Registro Personalizado</span>
+            <h2 class="text-2xl font-black text-[#4A154B]">Ficha de Investigador / Estudiante</h2>
+          </div>
+        </div>
+        <span id="profile-status-badge" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-[#6B21A8] border border-[#9333EA]/30 text-xs font-bold">
+          <i class="fa-solid fa-circle-info text-[#EC4899]"></i> Completa tus datos para personalizar tu guía
+        </span>
+      </div>
+
+      <form id="researcher-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div>
+          <label for="input-name" class="block text-xs font-extrabold uppercase text-[#4A154B] mb-1.5">
+            <i class="fa-solid fa-user text-[#EC4899] mr-1"></i> Nombre completo
+          </label>
+          <input type="text" id="input-name" placeholder="Ej. Camila Mendoza Ríos"
+            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-[#F472B6]/50 focus:border-[#6B21A8] focus:outline-none text-sm font-medium text-[#4A154B]" />
+        </div>
+
+        <div>
+          <label for="input-grade" class="block text-xs font-extrabold uppercase text-[#4A154B] mb-1.5">
+            <i class="fa-solid fa-graduation-cap text-[#EC4899] mr-1"></i> Edad / Grado o Carrera
+          </label>
+          <input type="text" id="input-grade" placeholder="Ej. 15 años - 4° de Secundaria"
+            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-[#F472B6]/50 focus:border-[#6B21A8] focus:outline-none text-sm font-medium text-[#4A154B]" />
+        </div>
+
+        <div>
+          <label for="input-school" class="block text-xs font-extrabold uppercase text-[#4A154B] mb-1.5">
+            <i class="fa-solid fa-school text-[#EC4899] mr-1"></i> Institución / Escuela
+          </label>
+          <input type="text" id="input-school" placeholder="Ej. I.E. Emblemática Santa Rosa"
+            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-[#F472B6]/50 focus:border-[#6B21A8] focus:outline-none text-sm font-medium text-[#4A154B]" />
+        </div>
+
+        <div>
+          <label for="input-date" class="block text-xs font-extrabold uppercase text-[#4A154B] mb-1.5">
+            <i class="fa-solid fa-calendar-day text-[#EC4899] mr-1"></i> Fecha de estudio
+          </label>
+          <input type="date" id="input-date"
+            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-[#F472B6]/50 focus:border-[#6B21A8] focus:outline-none text-sm font-medium text-[#4A154B]" />
+        </div>
+
+        <div class="md:col-span-2">
+          <label for="input-goal" class="block text-xs font-extrabold uppercase text-[#4A154B] mb-1.5">
+            <i class="fa-solid fa-bullseye text-[#EC4899] mr-1"></i> Meta personal de investigación
+          </label>
+          <input type="text" id="input-goal" placeholder="Ej. Aprender cómo prevenir el ciberbullying en mi aula y apoyar a mis compañeros"
+            class="w-full px-4 py-3 rounded-xl bg-white border-2 border-[#F472B6]/50 focus:border-[#6B21A8] focus:outline-none text-sm font-medium text-[#4A154B]" />
+        </div>
+
+        <div class="md:col-span-2 lg:col-span-3 flex flex-wrap items-center justify-between gap-3 pt-2">
+          <p class="text-xs text-[#6B21A8] font-medium">
+            <i class="fa-solid fa-lock text-[#EC4899] mr-1"></i> Tus datos se guardan localmente en este navegador para que no pierdas tu avance.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <button type="button" id="clear-profile-btn" class="px-4 py-2.5 rounded-xl bg-white hover:bg-[#FEF08A] text-[#4A154B] border border-[#4A154B]/20 text-xs font-bold transition">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Limpiar campos
+            </button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#6B21A8] hover:bg-[#4A154B] text-white text-sm font-extrabold shadow-md transition flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk text-[#FACC15]"></i> Guardar y Actualizar Ficha
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- ==================== MÓDULO 1: ¿QUÉ ES EL BULLYING? ==================== -->
+    <section id="modulo-1" class="scroll-mt-24 bg-white border-2 border-[#9333EA]/30 rounded-3xl p-6 sm:p-8 shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#FEF08A] text-[#4A154B] text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 1 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">¿Qué es el Bullying o Acoso Escolar?</h2>
+        </div>
+        <button data-module="1" class="complete-module-btn px-4 py-2.5 rounded-xl bg-[#FDF2F8] hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#EC4899] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <p class="text-base text-[#4A154B]/90 leading-relaxed mb-6">
+        Según la <strong>UNESCO</strong> y especialistas en psicología educativa, el <strong>bullying</strong> es una conducta de persecución física, verbal, social o digital que realiza un estudiante (o grupo) contra otro de forma deliberada y sostenida en el tiempo. Para que una situación sea considerada bullying, deben cumplirse <strong>tres criterios fundamentales</strong>:
+      </p>
+
+      <!-- 3 Criterios Clave -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <div class="p-5 rounded-2xl bg-[#FDF2F8] border-2 border-[#F472B6]">
+          <div class="w-11 h-11 rounded-xl bg-[#EC4899] text-white flex items-center justify-center text-lg font-bold mb-3 shadow">
+            <i class="fa-solid fa-crosshairs"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-[#4A154B] mb-1.5">1. Intencionalidad</h3>
+          <p class="text-sm text-[#4A154B]/85 leading-relaxed">
+            No es un accidente ni una broma inocente. Existe el propósito consciente de hacer daño, humillar, excluir o intimidar a la otra persona.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#FEF08A]/50 border-2 border-[#FACC15]">
+          <div class="w-11 h-11 rounded-xl bg-[#FACC15] text-[#4A154B] flex items-center justify-center text-lg font-bold mb-3 shadow">
+            <i class="fa-solid fa-repeat"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-[#4A154B] mb-1.5">2. Repetición</h3>
+          <p class="text-sm text-[#4A154B]/85 leading-relaxed">
+            Ocurre de manera reiterada a lo largo de días, semanas o meses, generando un estado constante de miedo y ansiedad ante nuevas agresiones.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[#F3E8FF] border-2 border-[#9333EA]">
+          <div class="w-11 h-11 rounded-xl bg-[#6B21A8] text-white flex items-center justify-center text-lg font-bold mb-3 shadow">
+            <i class="fa-solid fa-scale-unbalanced"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-[#4A154B] mb-1.5">3. Desequilibrio de Poder</h3>
+          <p class="text-sm text-[#4A154B]/85 leading-relaxed">
+            Existe una desigualdad (fuerza física, popularidad, superioridad numérica o dominio digital) que impide que la víctima se defienda en igualdad de condiciones.
+          </p>
+        </div>
+      </div>
+
+      <!-- Cuadro comparativo: Conflicto puntual vs Bullying -->
+      <div class="rounded-2xl overflow-hidden border-2 border-[#6B21A8]">
+        <div class="bg-[#4A154B] text-white px-5 py-3 font-extrabold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-code-compare text-[#FACC15]"></i> Diferencia clave: ¿Conflicto puntual o Bullying?
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#9333EA]/30 bg-white">
+          <div class="p-5">
+            <h4 class="font-extrabold text-[#6B21A8] mb-2 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#FACC15]"></span> Conflicto Escolar Puntual
+            </h4>
+            <ul class="space-y-2 text-sm text-[#4A154B]/90">
+              <li><i class="fa-solid fa-check text-[#6B21A8] mr-1.5"></i> Surge por un desacuerdo ocasional entre pares con igual poder.</li>
+              <li><i class="fa-solid fa-check text-[#6B21A8] mr-1.5"></i> No existe intención sistemática de destruir la autoestima del otro.</li>
+              <li><i class="fa-solid fa-check text-[#6B21A8] mr-1.5"></i> Se resuelve mediante el diálogo, disculpas y mediación.</li>
+            </ul>
+          </div>
+          <div class="p-5 bg-[#FDF2F8]/60">
+            <h4 class="font-extrabold text-[#EC4899] mb-2 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#EC4899]"></span> Acoso Escolar (Bullying)
+            </h4>
+            <ul class="space-y-2 text-sm text-[#4A154B]/90">
+              <li><i class="fa-solid fa-triangle-exclamation text-[#EC4899] mr-1.5"></i> Es una agresión unilateral, deliberada y sostenida en el tiempo.</li>
+              <li><i class="fa-solid fa-triangle-exclamation text-[#EC4899] mr-1.5"></i> Busca aislar, someter y anular emocionalmente a la víctima.</li>
+              <li><i class="fa-solid fa-triangle-exclamation text-[#EC4899] mr-1.5"></i> Requiere intervención adulta inmediata y protocolo de protección.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MÓDULO 2: TIPOS DE BULLYING ==================== -->
+    <section id="modulo-2" class="scroll-mt-24 bg-[#FDF2F8] border-2 border-[#F472B6] rounded-3xl p-6 sm:p-8 shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#6B21A8] text-white text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 2 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">Tipos de Bullying</h2>
+        </div>
+        <button data-module="2" class="complete-module-btn px-4 py-2.5 rounded-xl bg-white hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#6B21A8] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <p class="text-sm sm:text-base text-[#4A154B]/90 mb-5">
+        Selecciona cada pestaña para explorar cómo se manifiesta cada modalidad de acoso y conocer ejemplos reales para detectarlos a tiempo:
+      </p>
+
+      <!-- Pestañas interactivas -->
+      <div role="tablist" class="flex flex-wrap gap-2 mb-6">
+        <button role="tab" data-type="fisico" class="type-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold bg-[#4A154B] text-[#FACC15] shadow transition">
+          <i class="fa-solid fa-hand-fist mr-1.5"></i> Físico
+        </button>
+        <button role="tab" data-type="verbal" class="type-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold bg-white text-[#4A154B] hover:bg-[#FEF08A] transition">
+          <i class="fa-solid fa-comment-slash mr-1.5"></i> Verbal
+        </button>
+        <button role="tab" data-type="social" class="type-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold bg-white text-[#4A154B] hover:bg-[#FEF08A] transition">
+          <i class="fa-solid fa-users-slash mr-1.5"></i> Social / Relacional
+        </button>
+        <button role="tab" data-type="ciber" class="type-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold bg-white text-[#4A154B] hover:bg-[#FEF08A] transition">
+          <i class="fa-solid fa-mobile-screen-button mr-1.5"></i> Ciberbullying
+        </button>
+        <button role="tab" data-type="psicologico" class="type-tab px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold bg-white text-[#4A154B] hover:bg-[#FEF08A] transition">
+          <i class="fa-solid fa-brain mr-1.5"></i> Psicológico
+        </button>
+      </div>
+
+      <!-- Panel dinámico de detalle -->
+      <div id="type-detail-card" class="bg-white rounded-2xl p-6 border-2 border-[#9333EA]/40 shadow-sm">
+        <!-- Se llena dinámicamente mediante JS -->
+      </div>
+    </section>
+
+    <!-- ==================== MÓDULO 3: ROLES INVOLUCRADOS ==================== -->
+    <section id="modulo-3" class="scroll-mt-24 bg-white border-2 border-[#9333EA]/30 rounded-3xl p-6 sm:p-8 shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#FEF08A] text-[#4A154B] text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 3 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">El Triángulo del Bullying: Roles Involucrados</h2>
+        </div>
+        <button data-module="3" class="complete-module-btn px-4 py-2.5 rounded-xl bg-[#FDF2F8] hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#EC4899] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- La Víctima -->
+        <div class="rounded-2xl p-6 bg-[#FDF2F8] border-2 border-[#EC4899] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#EC4899] text-white text-xs font-extrabold">Rol 1</span>
+              <i class="fa-solid fa-heart-crack text-2xl text-[#EC4899]"></i>
+            </div>
+            <h3 class="text-xl font-black text-[#4A154B] mb-2">La Víctima</h3>
+            <p class="text-sm text-[#4A154B]/90 leading-relaxed mb-4">
+              Quien sufre las agresiones de manera injusta. <strong>Nunca es culpable</strong> del acoso que recibe. Suele experimentar aislamiento, temor a hablar por miedo a represalias y sentimiento de indefensión.
+            </p>
+          </div>
+          <div class="p-3 rounded-xl bg-white text-xs font-bold text-[#6B21A8] border border-[#F472B6]">
+            <i class="fa-solid fa-lightbulb text-[#FACC15] mr-1"></i> Necesita escucha sin juicios, validación emocional y protección inmediata.
+          </div>
+        </div>
+
+        <!-- El Agresor -->
+        <div class="rounded-2xl p-6 bg-[#F3E8FF] border-2 border-[#6B21A8] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#6B21A8] text-white text-xs font-extrabold">Rol 2</span>
+              <i class="fa-solid fa-user-shield text-2xl text-[#6B21A8]"></i>
+            </div>
+            <h3 class="text-xl font-black text-[#4A154B] mb-2">El Agresor / Hostigador</h3>
+            <p class="text-sm text-[#4A154B]/90 leading-relaxed mb-4">
+              Quien inicia o dirige la agresión buscando dominio, validación grupal o descargar frustraciones. Suele mostrar baja empatía, impulsividad y necesidad de atención.
+            </p>
+          </div>
+          <div class="p-3 rounded-xl bg-white text-xs font-bold text-[#6B21A8] border border-[#9333EA]/40">
+            <i class="fa-solid fa-lightbulb text-[#EC4899] mr-1"></i> Requiere límites firmes, consecuencias formativas y orientación psicológica.
+          </div>
+        </div>
+
+        <!-- Los Espectadores (Clave) -->
+        <div class="rounded-2xl p-6 bg-[#FEF08A]/70 border-2 border-[#EAB308] flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-full bg-[#4A154B] text-[#FACC15] text-xs font-extrabold">Rol Clave</span>
+              <i class="fa-solid fa-people-arrows text-2xl text-[#4A154B]"></i>
+            </div>
+            <h3 class="text-xl font-black text-[#4A154B] mb-2">Los Espectadores / Testigos</h3>
+            <p class="text-sm text-[#4A154B]/90 leading-relaxed mb-4">
+              Son la mayoría en el aula. Si ríen, graban o callan, refuerzan el poder del agresor. Cuando <strong>rompen el silencio</strong> y defienden o reportan, el acoso se detiene en menos de 10 segundos en más del 50% de los casos.
+            </p>
+          </div>
+          <div class="p-3 rounded-xl bg-white text-xs font-bold text-[#4A154B] border border-[#EAB308]">
+            <i class="fa-solid fa-bullhorn text-[#EC4899] mr-1"></i> ¡Tú tienes el poder de transformar el silencio en solidaridad!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MÓDULO 4: SEÑALES DE ALERTA E IMPACTO EMOCIONAL ==================== -->
+    <section id="modulo-4" class="scroll-mt-24 bg-[#FDF2F8] border-2 border-[#F472B6] rounded-3xl p-6 sm:p-8 shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#EC4899] text-white text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 4 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">Señales de Alerta e Impacto Emocional</h2>
+        </div>
+        <button data-module="4" class="complete-module-btn px-4 py-2.5 rounded-xl bg-white hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#6B21A8] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Indicadores Físicos -->
+        <div class="bg-white rounded-2xl p-6 border-2 border-[#9333EA]/30 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-[#FEF08A] text-[#4A154B] flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <h3 class="text-lg font-black text-[#4A154B] mb-3">Indicadores Físicos</h3>
+          <ul class="space-y-2.5 text-sm text-[#4A154B]/90">
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EC4899] mt-1 text-xs"></i> Moretones, rasguños o ropa rota sin explicación clara.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EC4899] mt-1 text-xs"></i> Dolores frecuentes de cabeza o estómago antes de ir a clase.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EC4899] mt-1 text-xs"></i> Alteraciones del sueño (insomnio, pesadillas) o pérdida de apetito.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EC4899] mt-1 text-xs"></i> Pérdida constante de útiles escolares, dinero o pertenencias.</li>
+          </ul>
+        </div>
+
+        <!-- Indicadores Emocionales -->
+        <div class="bg-white rounded-2xl p-6 border-2 border-[#EC4899]/50 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-[#FDF2F8] text-[#EC4899] flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-face-sad-tear"></i>
+          </div>
+          <h3 class="text-lg font-black text-[#4A154B] mb-3">Indicadores Emocionales</h3>
+          <ul class="space-y-2.5 text-sm text-[#4A154B]/90">
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#6B21A8] mt-1 text-xs"></i> Tristeza profunda, irritabilidad o cambios bruscos de humor.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#6B21A8] mt-1 text-xs"></i> Baja autoestima, inseguridad y sentimientos de culpa.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#6B21A8] mt-1 text-xs"></i> Aislamiento de amigos y familiares; evita actividades sociales.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#6B21A8] mt-1 text-xs"></i> Ansiedad intensa al revisar el celular o redes sociales.</li>
+          </ul>
+        </div>
+
+        <!-- Indicadores Académicos -->
+        <div class="bg-white rounded-2xl p-6 border-2 border-[#6B21A8]/40 shadow-sm">
+          <div class="w-12 h-12 rounded-2xl bg-[#F3E8FF] text-[#6B21A8] flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <h3 class="text-lg font-black text-[#4A154B] mb-3">Indicadores Académicos</h3>
+          <ul class="space-y-2.5 text-sm text-[#4A154B]/90">
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EAB308] mt-1 text-xs"></i> Descenso repentino en las calificaciones y falta de concentración.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EAB308] mt-1 text-xs"></i> Excusas constantes para faltar a la escuela o llegar tarde.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EAB308] mt-1 text-xs"></i> Evita los recreos, baños o salidas en grupo.</li>
+            <li class="flex items-start gap-2"><i class="fa-solid fa-circle-dot text-[#EAB308] mt-1 text-xs"></i> Abandono de actividades extracurriculares que antes disfrutaba.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MÓDULO 5: PROTOCOLO DE ACCIÓN Y PREVENCIÓN ==================== -->
+    <section id="modulo-5" class="scroll-mt-24 bg-white border-2 border-[#9333EA]/30 rounded-3xl p-6 sm:p-8 shadow-md">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#FEF08A] text-[#4A154B] text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 5 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">Protocolo de Acción y Canales de Ayuda</h2>
+        </div>
+        <button data-module="5" class="complete-module-btn px-4 py-2.5 rounded-xl bg-[#FDF2F8] hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#EC4899] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Qué hacer si sufres bullying -->
+        <div class="p-6 rounded-2xl bg-gradient-to-br from-[#4A154B] to-[#6B21A8] text-white shadow-md">
+          <h3 class="text-xl font-black text-[#FACC15] mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-hand-holding-heart"></i> Si tú estás sufriendo Bullying:
+          </h3>
+          <ol class="space-y-3 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#FACC15] text-[#4A154B] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span><strong>No guardes silencio:</strong> Habla inmediatamente con tus padres, un docente de confianza o el psicólogo escolar. Pedir ayuda es un acto de valentía.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#FACC15] text-[#4A154B] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span><strong>Recuerda que no es tu culpa:</strong> Nada justifica que alguien te humille o maltrate.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#FACC15] text-[#4A154B] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span><strong>Guarda evidencias (en Ciberbullying):</strong> Toma capturas de pantalla con fecha y hora, bloquea al agresor y no respondas a provocaciones.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#FACC15] text-[#4A154B] font-black text-xs flex items-center justify-center shrink-0 mt-0.5">4</span>
+              <span><strong>Rodéate de personas seguras:</strong> Permanece acompañado en recreos, traslados y espacios comunes.</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Qué hacer si eres testigo -->
+        <div class="p-6 rounded-2xl bg-[#FDF2F8] border-2 border-[#EC4899] text-[#4A154B] shadow-md">
+          <h3 class="text-xl font-black text-[#EC4899] mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-users-rays"></i> Si eres Testigo o Compañero/a:
+          </h3>
+          <ol class="space-y-3 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#EC4899] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span><strong>No seas cómplice pasivo:</strong> No te rías, no aplaudas ni reenvíes memes o videos ofensivos.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#EC4899] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span><strong>Apoya a la víctima:</strong> Acércate después del incidente, escúchala y hazle saber que no está sola.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#EC4899] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+              <span><strong>Reporta a un adulto responsable:</strong> Informar un caso de acoso no es "ser chismoso", es proteger la integridad de una persona.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="w-6 h-6 rounded-full bg-[#EC4899] text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">4</span>
+              <span><strong>Promueve la inclusión:</strong> Invita a participar en trabajos y juegos a quienes suelen ser excluidos.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Líneas y canales de ayuda oficiales -->
+      <div class="p-5 rounded-2xl bg-[#FEF08A]/60 border-2 border-[#FACC15]">
+        <h4 class="text-base font-black text-[#4A154B] mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-phone-volume text-[#EC4899]"></i> Canales de Ayuda y Reporte Confidencial
+        </h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <div class="p-4 rounded-xl bg-white border border-[#4A154B]/15">
+            <span class="font-black text-[#6B21A8] block mb-1">Portal SíseVe (Perú - MINEDU)</span>
+            <p class="text-[#4A154B]/85 mb-2">Plataforma oficial contra la violencia escolar. Línea gratuita: <strong>0800-76888</strong>.</p>
+            <a href="https://www.siseve.pe" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-extrabold text-[#EC4899] hover:underline">
+              Visitar siseve.pe <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-[#4A154B]/15">
+            <span class="font-black text-[#6B21A8] block mb-1">Línea 100 / Chat 100 (Perú)</span>
+            <p class="text-[#4A154B]/85 mb-2">Orientación psicológica y soporte gratuito las 24 horas para niños, adolescentes y familias.</p>
+            <span class="inline-flex items-center gap-1 font-extrabold text-[#4A154B]">
+              <i class="fa-solid fa-phone text-[#EC4899]"></i> Marca gratis al 100
+            </span>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-[#4A154B]/15">
+            <span class="font-black text-[#6B21A8] block mb-1">UNICEF & UNESCO Global</span>
+            <p class="text-[#4A154B]/85 mb-2">Guías internacionales sobre ciberacoso, convivencia pacífica y derechos de la infancia.</p>
+            <a href="https://www.unicef.org/es/end-violence/ciberacoso-que-es-y-como-detenerlo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-extrabold text-[#EC4899] hover:underline">
+              Guía UNICEF <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MÓDULO 6: MULTIMEDIA, RECURSOS, NOTAS Y AUTOEVALUACIÓN ==================== -->
+    <section id="modulo-6" class="scroll-mt-24 bg-[#FDF2F8] border-2 border-[#F472B6] rounded-3xl p-6 sm:p-8 shadow-md space-y-10">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full bg-[#4A154B] text-[#FACC15] text-xs font-black uppercase tracking-wide mb-2">
+            Módulo 6 de 6
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#4A154B]">Multimedia, Recursos de Investigación y Test</h2>
+        </div>
+        <button data-module="6" class="complete-module-btn px-4 py-2.5 rounded-xl bg-white hover:bg-[#FACC15] text-[#4A154B] border-2 border-[#6B21A8] text-xs font-extrabold transition flex items-center gap-2 self-start sm:self-center">
+          <i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>
+        </button>
+      </div>
+
+      <!-- 6A. Videos Educativos de YouTube -->
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+          <h3 class="text-xl font-black text-[#4A154B] flex items-center gap-2">
+            <i class="fa-brands fa-youtube text-[#EC4899] text-2xl"></i> Videoteca Educativa sobre Bullying y Empatía
+          </h3>
+          <a href="https://www.youtube.com/results?search_query=prevencion+del+bullying+escolar+empatia+ciberbullying" target="_blank" rel="noopener noreferrer"
+            class="px-4 py-2 rounded-xl bg-[#EC4899] hover:bg-[#6B21A8] text-white text-xs font-extrabold transition flex items-center gap-1.5 shadow">
+            <i class="fa-solid fa-magnifying-glass"></i> Explorar más videos en YouTube
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Video 1: Qué es el bullying y cómo prevenirlo (UNESCO) -->
+          <div class="bg-white rounded-2xl overflow-hidden border-2 border-[#9333EA]/40 shadow-sm flex flex-col">
+            <div class="aspect-video w-full bg-[#4A154B]">
+              <iframe class="w-full h-full" src="https://www.youtube.com/embed/I0RZv37a0b0"
+                title="¿Qué es el bullying y cómo detenerlo? - Recurso educativo"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-[#FEF08A] text-[#4A154B]">Conceptos Clave</span>
+                <h4 class="font-extrabold text-base text-[#4A154B] mt-2">Comprendiendo el Acoso Escolar y la Empatía</h4>
+                <p class="text-xs text-[#4A154B]/80 mt-1">Recurso audiovisual para analizar el impacto emocional del acoso y la importancia de alzar la voz.</p>
+              </div>
+              <a href="https://www.youtube.com/results?search_query=que+es+el+bullying+cortometraje+educativo" target="_blank" rel="noopener noreferrer" class="mt-3 text-xs font-bold text-[#EC4899] hover:underline inline-flex items-center gap-1">
+                Ver cortometrajes relacionados <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Video 2: Ciberbullying y seguridad digital -->
+          <div class="bg-white rounded-2xl overflow-hidden border-2 border-[#9333EA]/40 shadow-sm flex flex-col">
+            <div class="aspect-video w-full bg-[#4A154B]">
+              <iframe class="w-full h-full" src="https://www.youtube.com/embed/tIn4m5g21_8"
+                title="Prevención del Ciberbullying y convivencia digital"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-[#F3E8FF] text-[#6B21A8]">Entorno Digital</span>
+                <h4 class="font-extrabold text-base text-[#4A154B] mt-2">Ciberbullying: Riesgos y Buenas Prácticas en Redes</h4>
+                <p class="text-xs text-[#4A154B]/80 mt-1">Aprende cómo proteger tu identidad digital, bloquear agresiones en línea y actuar ante el acoso virtual.</p>
+              </div>
+              <a href="https://www.youtube.com/results?search_query=como+prevenir+el+ciberbullying+adolescentes" target="_blank" rel="noopener noreferrer" class="mt-3 text-xs font-bold text-[#EC4899] hover:underline inline-flex items-center gap-1">
+                Buscar más sobre Ciberbullying <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enlaces adicionales de investigación -->
+        <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a href="https://www.unesco.org/es/health-education/safe-learning-environments" target="_blank" rel="noopener noreferrer"
+            class="p-4 rounded-2xl bg-white hover:bg-[#FEF08A] border-2 border-[#6B21A8]/30 transition flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#6B21A8] text-white flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <div>
+              <span class="block text-xs font-black text-[#4A154B]">UNESCO: Entornos Seguros</span>
+              <span class="text-[11px] text-[#6B21A8]">Informes mundiales sobre violencia escolar</span>
+            </div>
+          </a>
+
+          <a href="https://www.youtube.com/results?search_query=campana+rompiendo+el+silencio+bullying" target="_blank" rel="noopener noreferrer"
+            class="p-4 rounded-2xl bg-white hover:bg-[#FEF08A] border-2 border-[#6B21A8]/30 transition flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#EC4899] text-white flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-video"></i>
+            </div>
+            <div>
+              <span class="block text-xs font-black text-[#4A154B]">Campañas en YouTube</span>
+              <span class="text-[11px] text-[#6B21A8]">Testimonios y charlas TEDx sobre bullying</span>
+            </div>
+          </a>
+
+          <a href="https://www.unicef.org/es/end-violence" target="_blank" rel="noopener noreferrer"
+            class="p-4 rounded-2xl bg-white hover:bg-[#FEF08A] border-2 border-[#6B21A8]/30 transition flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-[#FACC15] text-[#4A154B] flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-hands-holding-child"></i>
+            </div>
+            <div>
+              <span class="block text-xs font-black text-[#4A154B]">UNICEF: Fin a la Violencia</span>
+              <span class="text-[11px] text-[#6B21A8]">Herramientas para estudiantes y docentes</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 6B. Bloc de Notas de Investigación + Autoevaluación -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Bloc de notas interactivo -->
+        <div class="lg:col-span-6 bg-white rounded-2xl p-6 border-2 border-[#6B21A8] flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-black text-[#4A154B] mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-pen-to-square text-[#EC4899]"></i> Cuaderno de Investigación Personal
+            </h3>
+            <p class="text-xs text-[#4A154B]/80 mb-3">
+              Anota tus reflexiones, ideas clave de los videos o propuestas para mejorar la convivencia en tu escuela:
+            </p>
+            <textarea id="research-notes" rows="7" placeholder="Escribe aquí tus hallazgos, preguntas o conclusiones sobre cómo romper el silencio frente al bullying..."
+              class="w-full p-4 rounded-xl bg-[#FDF2F8] border-2 border-[#F472B6]/60 focus:border-[#6B21A8] focus:outline-none text-sm text-[#4A154B] leading-relaxed"></textarea>
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2.5 justify-between items-center">
+            <button type="button" id="save-notes-btn" class="px-4 py-2.5 rounded-xl bg-[#6B21A8] hover:bg-[#4A154B] text-white text-xs font-extrabold transition flex items-center gap-1.5">
+              <i class="fa-solid fa-floppy-disk text-[#FACC15]"></i> Guardar Notas
+            </button>
+            <button type="button" id="download-report-btn" class="px-4 py-2.5 rounded-xl bg-[#FACC15] hover:bg-[#FEF08A] text-[#4A154B] text-xs font-extrabold transition flex items-center gap-1.5 shadow">
+              <i class="fa-solid fa-file-arrow-down"></i> Descargar Ficha + Notas (.txt)
+            </button>
+          </div>
+        </div>
+
+        <!-- Autoevaluación interactiva de 4 preguntas -->
+        <div class="lg:col-span-6 bg-white rounded-2xl p-6 border-2 border-[#EC4899]">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg font-black text-[#4A154B] flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-question text-[#6B21A8]"></i> Autoevaluación Rápida
+            </h3>
+            <span id="quiz-score-badge" class="px-3 py-1 rounded-full bg-[#FEF08A] text-[#4A154B] text-xs font-black">
+              4 Preguntas
+            </span>
+          </div>
+
+          <form id="quiz-form" class="space-y-4 text-xs sm:text-sm">
+            <!-- Pregunta 1 -->
+            <div class="p-3.5 rounded-xl bg-[#FDF2F8]">
+              <p class="font-extrabold text-[#4A154B] mb-2">1. ¿Cuáles son los 3 criterios que definen al bullying?</p>
+              <div class="space-y-1.5">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q1" value="a" class="accent-[#6B21A8]" />
+                  <span>Una discusión única, accidental y entre amigos.</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q1" value="b" class="accent-[#6B21A8]" />
+                  <span>Intencionalidad, repetición en el tiempo y desequilibrio de poder.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pregunta 2 -->
+            <div class="p-3.5 rounded-xl bg-[#FDF2F8]">
+              <p class="font-extrabold text-[#4A154B] mb-2">2. ¿Qué papel cumplen los espectadores cuando rompen el silencio?</p>
+              <div class="space-y-1.5">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q2" value="a" class="accent-[#6B21A8]" />
+                  <span>Pueden detener el acoso rápidamente al apoyar a la víctima y reportar.</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q2" value="b" class="accent-[#6B21A8]" />
+                  <span>No influyen en nada porque es un asunto solo entre dos personas.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pregunta 3 -->
+            <div class="p-3.5 rounded-xl bg-[#FDF2F8]">
+              <p class="font-extrabold text-[#4A154B] mb-2">3. Ante un caso de Ciberbullying, ¿cuál es una acción recomendada?</p>
+              <div class="space-y-1.5">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q3" value="a" class="accent-[#6B21A8]" />
+                  <span>Guardar capturas de pantalla, bloquear al agresor y pedir ayuda adulta.</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q3" value="b" class="accent-[#6B21A8]" />
+                  <span>Responder con insultos más fuertes y borrar toda evidencia.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Pregunta 4 -->
+            <div class="p-3.5 rounded-xl bg-[#FDF2F8]">
+              <p class="font-extrabold text-[#4A154B] mb-2">4. ¿Quién tiene la culpa cuando ocurre un caso de acoso escolar?</p>
+              <div class="space-y-1.5">
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q4" value="a" class="accent-[#6B21A8]" />
+                  <span>La víctima, por ser tímida o diferente.</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input type="radio" name="q4" value="b" class="accent-[#6B21A8]" />
+                  <span>Nunca la víctima; la violencia siempre es responsabilidad de quien agredió.</span>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-xl bg-[#EC4899] hover:bg-[#6B21A8] text-white font-extrabold text-sm shadow transition">
+              <i class="fa-solid fa-check-double mr-1.5"></i> Verificar Respuestas
+            </button>
+          </form>
+
+          <div id="quiz-feedback" class="hidden mt-4 p-3.5 rounded-xl text-xs sm:text-sm font-bold"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== PIE DE PÁGINA ==================== -->
+  <footer class="bg-[#4A154B] text-white py-10 mt-12 border-t-4 border-[#FACC15]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <p class="text-lg font-black text-[#FACC15]">Rompiendo el Silencio: Unidos Contra el Bullying</p>
+        <p class="text-xs text-[#FDF2F8]/85 mt-1">
+          Recurso educativo interactivo para promover la empatía, el respeto y la prevención del acoso escolar.
+        </p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3 text-xs font-bold">
+        <a href="#ficha-investigador" class="px-4 py-2 rounded-full bg-white/10 hover:bg-[#EC4899] transition">Ir arriba ↑</a>
+        <button id="reset-all-progress" class="px-4 py-2 rounded-full bg-white/10 hover:bg-[#FACC15] hover:text-[#4A154B] transition">
+          Reiniciar progreso de módulos
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Contenedor de notificaciones Toast (sin usar alert()) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <!-- ==================== LÓGICA JAVASCRIPT INTERACTIVA ==================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- 1. UTILIDAD DE NOTIFICACIONES TOAST ---
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        const bgClass = type === 'success'
+          ? 'bg-[#4A154B] text-white border-2 border-[#FACC15]'
+          : 'bg-[#EC4899] text-white border-2 border-white';
+
+        toast.className = `toast-enter pointer-events-auto px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 ${bgClass}`;
+        toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-[#FACC15]' : 'fa-circle-exclamation'}"></i><span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      // --- 2. MENÚ MÓVIL ---
+      const mobileToggleBtn = document.getElementById('toggle-mobile-menu');
+      const mobileDrawer = document.getElementById('mobile-nav-drawer');
+      mobileToggleBtn.addEventListener('click', () => {
+        mobileDrawer.classList.toggle('hidden');
+      });
+      document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => mobileDrawer.classList.add('hidden'));
+      });
+
+      // --- 3. FICHA DE INVESTIGADOR / ESTUDIANTE (LOCALSTORAGE) ---
+      const profileForm = document.getElementById('researcher-form');
+      const nameInput = document.getElementById('input-name');
+      const gradeInput = document.getElementById('input-grade');
+      const schoolInput = document.getElementById('input-school');
+      const dateInput = document.getElementById('input-date');
+      const goalInput = document.getElementById('input-goal');
+      const greetingBox = document.getElementById('personalized-greeting-box');
+      const greetingTitle = document.getElementById('greeting-title');
+      const greetingSubtitle = document.getElementById('greeting-subtitle');
+      const statusBadge = document.getElementById('profile-status-badge');
+
+      // Establecer fecha actual por defecto si está vacía
+      if (!dateInput.value) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+      }
+
+      function renderProfile(data) {
+        if (!data) return;
+        nameInput.value = data.name || '';
+        gradeInput.value = data.grade || '';
+        schoolInput.value = data.school || '';
+        dateInput.value = data.date || new Date().toISOString().split('T')[0];
+        goalInput.value = data.goal || '';
+
+        if (data.name && data.name.trim() !== '') {
+          greetingBox.classList.remove('hidden');
+          greetingTitle.textContent = `¡Hola, ${data.name}!`;
+          const details = [
+            data.grade ? `Nivel: ${data.grade}` : '',
+            data.school ? `Institución: ${data.school}` : '',
+            data.goal ? `Meta: "${data.goal}"` : ''
+          ].filter(Boolean).join(' • ');
+          greetingSubtitle.textContent = details || 'Tu ficha de investigación está activa.';
+          statusBadge.innerHTML = `<i class="fa-solid fa-circle-check text-[#EC4899]"></i> Ficha guardada para ${data.name}`;
+        } else {
+          greetingBox.classList.add('hidden');
+          statusBadge.innerHTML = `<i class="fa-solid fa-circle-info text-[#EC4899]"></i> Completa tus datos para personalizar tu guía`;
+        }
+      }
+
+      // Cargar perfil guardado
+      try {
+        const savedProfile = JSON.parse(localStorage.getItem('bullying_researcher_profile'));
+        if (savedProfile) renderProfile(savedProfile);
+      } catch (e) {
+        console.error('Error leyendo perfil:', e);
+      }
+
+      profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const profileData = {
+          name: nameInput.value.trim(),
+          grade: gradeInput.value.trim(),
+          school: schoolInput.value.trim(),
+          date: dateInput.value,
+          goal: goalInput.value.trim()
+        };
+        localStorage.setItem('bullying_researcher_profile', JSON.stringify(profileData));
+        renderProfile(profileData);
+        showToast('¡Ficha de investigador guardada correctamente!');
+      });
+
+      document.getElementById('clear-profile-btn').addEventListener('click', () => {
+        localStorage.removeItem('bullying_researcher_profile');
+        profileForm.reset();
+        dateInput.value = new Date().toISOString().split('T')[0];
+        renderProfile({});
+        showToast('Campos de la ficha reiniciados.', 'info');
+      });
+
+      // --- 4. PESTAÑAS INTERACTIVAS DE TIPOS DE BULLYING ---
+      const bullyingTypesData = {
+        fisico: {
+          title: 'Bullying Físico',
+          badge: 'Agresión Directa',
+          icon: 'fa-hand-fist',
+          description: 'Incluye cualquier contacto corporal dañino o intimidatorio hacia la víctima o sus pertenencias.',
+          examples: [
+            'Empujones, golpes, patadas, zancadillas o escupitajos.',
+            'Esconder, romper o robar mochilas, cuadernos o alimentos.',
+            'Bloquear el paso en pasillos o encerrar a alguien en un espacio.'
+          ],
+          tip: 'Es el más visible; cualquier marca física o daño repetido a objetos personales debe reportarse de inmediato.'
+        },
+        verbal: {
+          title: 'Bullying Verbal',
+          badge: 'Agresión con Palabras',
+          icon: 'fa-comment-slash',
+          description: 'Consiste en el uso sistemático de palabras hirientes para humillar, ridiculizar o desvalorizar a otra persona.',
+          examples: [
+            'Apodos ofensivos, insultos constantes y burlas sobre el aspecto físico o forma de hablar.',
+            'Comentarios discriminatorios por origen, género, discapacidad o situación económica.',
+            'Amenazas verbales para generar miedo o exigir dinero/tareas.'
+          ],
+          tip: 'Las palabras dejan huellas profundas; nunca normalices los apodos crueles como "simples bromas".'
+        },
+        social: {
+          title: 'Bullying Social o Relacional',
+          badge: 'Exclusión y Aislamiento',
+          icon: 'fa-users-slash',
+          description: 'Busca dañar la reputación de la víctima y destruir sus relaciones interpersonales dentro del grupo.',
+          examples: [
+            'Ignorar deliberadamente a un compañero ("ley del hielo") y excluirlo de equipos o actividades.',
+            'Difundir rumores falsos o chismes malintencionados para que nadie le hable.',
+            'Ridiculizar públicamente a la persona frente a otros estudiantes.'
+          ],
+          tip: 'Suele pasar desapercibido para los adultos. Invitar a quien está solo rompe el círculo de exclusión.'
+        },
+        ciber: {
+          title: 'Ciberbullying (Acoso Digital)',
+          badge: '24/7 en Redes y Mensajería',
+          icon: 'fa-mobile-screen-button',
+          description: 'Acoso ejercido a través de teléfonos móviles, redes sociales, videojuegos en línea o plataformas de mensajería.',
+          examples: [
+            'Crear memes, stickers o editar fotos para ridiculizar a alguien en grupos de WhatsApp o TikTok.',
+            'Suplantar la identidad de la víctima o difundir fotos/datos privados sin consentimiento.',
+            'Enviar mensajes amenazantes o coordinar ataques masivos de comentarios negativos.'
+          ],
+          tip: 'Al ocurrir en internet, el daño es permanente y 24/7. Guardar capturas de pantalla es vital para denunciar.'
+        },
+        psicologico: {
+          title: 'Bullying Psicológico',
+          badge: 'Intimidación y Manipulación',
+          icon: 'fa-brain',
+          description: 'Acciones sutiles o directas destinadas a minar la autoestima, provocar inseguridad y generar temor constante.',
+          examples: [
+            'Miradas intimidantes, gestos de desprecio o persecución silenciosa.',
+            'Chantaje emocional o manipulación para obligar a la víctima a hacer cosas contra su voluntad.',
+            'Descalificar continuamente sus logros o capacidades.'
+          ],
+          tip: 'Acompaña a casi todas las demás formas de bullying y requiere acompañamiento emocional especializado.'
+        }
+      };
+
+      const typeDetailCard = document.getElementById('type-detail-card');
+      const typeTabs = document.querySelectorAll('.type-tab');
+
+      function renderBullyingType(key) {
+        const item = bullyingTypesData[key];
+        if (!item) return;
+
+        typeDetailCard.innerHTML = `
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#F472B6]/40 pb-4 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#6B21A8] text-[#FACC15] flex items-center justify-center text-xl shadow">
+                <i class="fa-solid ${item.icon}"></i>
+              </div>
+              <div>
+                <span class="text-xs font-extrabold uppercase text-[#EC4899]">${item.badge}</span>
+                <h3 class="text-xl font-black text-[#4A154B]">${item.title}</h3>
+              </div>
+            </div>
+          </div>
+          <p class="text-sm sm:text-base text-[#4A154B]/90 mb-4 leading-relaxed">${item.description}</p>
+          <div class="bg-[#FDF2F8] rounded-xl p-4 mb-4">
+            <p class="text-xs font-black uppercase text-[#6B21A8] mb-2">Manifestaciones frecuentes:</p>
+            <ul class="space-y-2 text-sm text-[#4A154B]">
+              ${item.examples.map(ex => `<li class="flex items-start gap-2"><i class="fa-solid fa-check-circle text-[#EC4899] mt-1"></i><span>${ex}</span></li>`).join('')}
+            </ul>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#FEF08A]/70 border border-[#EAB308] text-xs sm:text-sm font-bold text-[#4A154B] flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-[#6B21A8] text-base"></i>
+            <span>${item.tip}</span>
+          </div>
+        `;
+      }
+
+      typeTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          typeTabs.forEach(t => {
+            t.classList.remove('bg-[#4A154B]', 'text-[#FACC15]', 'shadow');
+            t.classList.add('bg-white', 'text-[#4A154B]');
+          });
+          tab.classList.remove('bg-white', 'text-[#4A154B]');
+          tab.classList.add('bg-[#4A154B]', 'text-[#FACC15]', 'shadow');
+          renderBullyingType(tab.dataset.type);
+        });
+      });
+
+      // Inicializar con el primer tipo
+      renderBullyingType('fisico');
+
+      // --- 5. BARRA DE PROGRESO DUAL (SCROLL + MÓDULOS COMPLETADOS) ---
+      let completedModules = new Set();
+      try {
+        const savedModules = JSON.parse(localStorage.getItem('bullying_completed_modules'));
+        if (Array.isArray(savedModules)) {
+          completedModules = new Set(savedModules);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      const progressBar = document.getElementById('global-progress-bar');
+      const progressText = document.getElementById('progress-percentage');
+      const modulesCounter = document.getElementById('modules-counter');
+      const moduleButtons = document.querySelectorAll('.complete-module-btn');
+
+      function updateModuleButtonsUI() {
+        moduleButtons.forEach(btn => {
+          const modId = btn.dataset.module;
+          if (completedModules.has(modId)) {
+            btn.classList.remove('bg-[#FDF2F8]', 'bg-white', 'text-[#4A154B]');
+            btn.classList.add('bg-[#6B21A8]', 'text-[#FACC15]', 'border-[#4A154B]');
+            btn.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> <span>¡Módulo Completado!</span>`;
+          } else {
+            btn.classList.remove('bg-[#6B21A8]', 'text-[#FACC15]', 'border-[#4A154B]');
+            btn.classList.add('bg-[#FDF2F8]', 'text-[#4A154B]');
+            btn.innerHTML = `<i class="fa-regular fa-circle-check text-base"></i> <span>Marcar módulo como completado</span>`;
+          }
+        });
+      }
+
+      function updateGlobalProgress() {
+        // 50% peso por scroll, 50% peso por módulos completados (6 módulos)
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollRatio = docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
+        const modulesRatio = completedModules.size / 6;
+
+        const totalPercent = Math.round((scrollRatio * 40) + (modulesRatio * 60));
+        progressBar.style.width = `${totalPercent}%`;
+        progressText.textContent = `${totalPercent}%`;
+        modulesCounter.textContent = `${completedModules.size} de 6 módulos completados`;
+      }
+
+      moduleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const modId = btn.dataset.module;
+          if (completedModules.has(modId)) {
+            completedModules.delete(modId);
+            showToast(`Módulo ${modId} desmarcado.`, 'info');
+          } else {
+            completedModules.add(modId);
+            showToast(`¡Excelente! Completaste el Módulo ${modId}.`);
+          }
+          localStorage.setItem('bullying_completed_modules', JSON.stringify([...completedModules]));
+          updateModuleButtonsUI();
+          updateGlobalProgress();
+        });
+      });
+
+      document.getElementById('reset-all-progress').addEventListener('click', () => {
+        completedModules.clear();
+        localStorage.removeItem('bullying_completed_modules');
+        updateModuleButtonsUI();
+        updateGlobalProgress();
+        showToast('Progreso de módulos reiniciado.', 'info');
+      });
+
+      window.addEventListener('scroll', updateGlobalProgress, { passive: true });
+      updateModuleButtonsUI();
+      updateGlobalProgress();
+
+      // --- 6. CUADERNO DE INVESTIGACIÓN Y DESCARGA DE REPORTE ---
+      const notesArea = document.getElementById('research-notes');
+      const savedNotes = localStorage.getItem('bullying_research_notes');
+      if (savedNotes) notesArea.value = savedNotes;
+
+      document.getElementById('save-notes-btn').addEventListener('click', () => {
+        localStorage.setItem('bullying_research_notes', notesArea.value);
+        showToast('Notas de investigación guardadas.');
+      });
+
+      document.getElementById('download-report-btn').addEventListener('click', () => {
+        const profile = JSON.parse(localStorage.getItem('bullying_researcher_profile') || '{}');
+        const notes = notesArea.value.trim() || '(Sin notas registradas aún)';
+        const content = [
+          '====================================================================',
+          'ROMPIENDO EL SILENCIO: UNIDOS CONTRA EL BULLYING',
+          'FICHA DE INVESTIGACIÓN Y APUNTES PERSONALES',
+          '====================================================================',
+          `Investigador/a: ${profile.name || 'No especificado'}`,
+          `Edad / Grado:   ${profile.grade || 'No especificado'}`,
+          `Institución:    ${profile.school || 'No especificado'}`,
+          `Fecha:          ${profile.date || new Date().toISOString().split('T')[0]}`,
+          `Meta personal:  ${profile.goal || 'No especificada'}`,
+          `Progreso:       ${completedModules.size} de 6 módulos completados`,
+          '--------------------------------------------------------------------',
+          'NOTAS Y HALLAZGOS DE INVESTIGACIÓN:',
+          notes,
+          '===================================================================='
+        ].join('\n');
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `Ficha_Rompiendo_El_Silencio_${(profile.name || 'Estudiante').replace(/\s+/g, '_')}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('Descargando tu ficha y notas en formato .txt');
+      });
+
+      // --- 7. AUTOEVALUACIÓN INTERACTIVA ---
+      const quizForm = document.getElementById('quiz-form');
+      const quizFeedback = document.getElementById('quiz-feedback');
+      const quizBadge = document.getElementById('quiz-score-badge');
+
+      quizForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const answers = { q1: 'b', q2: 'a', q3: 'a', q4: 'b' };
+        let score = 0;
+        let answered = 0;
+
+        Object.keys(answers).forEach(q => {
+          const selected = quizForm.querySelector(`input[name="${q}"]:checked`);
+          if (selected) {
+            answered++;
+            if (selected.value === answers[q]) score++;
+          }
+        });
+
+        if (answered < 4) {
+          showToast('Por favor responde las 4 preguntas antes de verificar.', 'info');
+          return;
+        }
+
+        quizFeedback.classList.remove('hidden', 'bg-[#FEF08A]', 'bg-[#F3E8FF]', 'text-[#4A154B]');
+        quizBadge.textContent = `Puntaje: ${score}/4`;
+
+        if (score === 4) {
+          quizFeedback.classList.add('bg-[#FEF08A]', 'text-[#4A154B]', 'border', 'border-[#EAB308]');
+          quizFeedback.innerHTML = `<i class="fa-solid fa-trophy text-[#EC4899] mr-1.5"></i> ¡Puntaje perfecto (4/4)! Dominas los conceptos clave para prevenir y actuar contra el bullying.`;
+          completedModules.add('6');
+          localStorage.setItem('bullying_completed_modules', JSON.stringify([...completedModules]));
+          updateModuleButtonsUI();
+          updateGlobalProgress();
+          showToast('¡Autoevaluación aprobada con 4/4! Módulo 6 completado.');
+        } else {
+          quizFeedback.classList.add('bg-[#F3E8FF]', 'text-[#4A154B]', 'border', 'border-[#9333EA]');
+          quizFeedback.innerHTML = `<i class="fa-solid fa-rotate-right text-[#6B21A8] mr-1.5"></i> Obtuviste ${score} de 4 respuestas correctas. Revisa los módulos anteriores e inténtalo nuevamente.`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
